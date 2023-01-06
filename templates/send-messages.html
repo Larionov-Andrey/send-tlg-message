@@ -1,0 +1,85 @@
+{% extends "index.html" %}
+{% block title %}Отправка сообщений{% endblock %}
+{% block content %}
+<script>
+var force = 0
+function setAction(form) {
+
+    form.action = `?force=${force}`;
+    return true;
+    }
+
+
+</script>
+<div class="content">
+  <h2 class="content__title title">Отправка сообщений</h2>
+  <form class="content__form" method="post" enctype="multipart/form-data" id="send-form" onsubmit="return setAction(this)">
+    <div class="content__line line">
+      <label class="content__label label" for="title-post">Заголовок сообщения</label>
+      <input class="input content__input" id="title-post" autocomplete="off" type="text" name="title"
+             {% if edit %} value="{{item.title}}" {% endif %}
+      >
+    </div>
+    <div class="content__line line">
+      <label class="content__label label" for="chn">Список каналов</label>
+      <textarea class="textarea content__textarea" id="chn" autocomplete="off" type="text" name="channels">{% if edit %}{{item.channels}}{% endif %}</textarea>
+    </div>
+    <div class="content__line line">
+      <label class="content__label label" for="text-post">Текст сообщений</label>
+      <textarea class="textarea content__textarea" id="text-post" autocomplete="off" type="text" name="text">{% if edit %}{{item.text}}{% endif %}</textarea>
+    </div>
+
+    <div class="content__line line">
+      <label class="content__label label" for="channels-post">Файлы:</label>
+      <input class="content__input" multiple="multiple" autocomplete="off" type="file" id="channels-post" name="images">
+    </div>
+
+    <div class="content__wrapper">
+      <div class="content__row">
+        <div class="content__line">
+          <label class="content__label label" for="form-0">Дата и время отправки:</label>
+          <input class="content__input input_date" id="form-0" autocomplete="off" type="datetime-local"
+                 {% if edit %}
+                 value="{{item.date}}"
+                 {% else %}
+                 value="2017-06-01T08:30"
+                 {% endif %}
+                 name="date">
+        </div>
+        <div class="content__checkbox checkbox">
+          <input class="checkbox__input" id="c_0" type="checkbox" value="0" name="repeat">
+          <label class="checkbox__label" for="c_0">
+            <span class="checkbox__text">Повторять</span>
+          </label>
+        </div>
+        <select class="content__select" data-sel="c_0" name="period">
+          <option value="day" selected>Каждый день</option>
+          <option value="2_day">Через день</option>
+          <option value="3_day">Через 2 дня</option>
+          <option value="4_day">Через 3 дня</option>
+          <option value="5_day">Через каждые 4 дня</option>
+          <option value="6_day">Через каждые 5 дней</option>
+          <option value="7_day">Через каждые 6 дней</option>
+          <option value="week">Раз в неделю</option>
+          <option value="mon">Каждый понедельник</option>
+          <option value="tue">Каждый вторник</option>
+          <option value="wed">Каждую среду</option>
+          <option value="thu">Каждый четверг</option>
+          <option value="fri">Каждую пятницу</option>
+          <option value="sat">Каждую субботу</option>
+          <option value="sun">Каждое воскресенье</option>
+        </select>
+      </div>
+    </div>
+    <button class="content__btn btn" type="button">Добавить дату и время публикации</button>
+    <div class="content__btn-wrapper">
+      {% if edit %}
+      <a href="/del/{{item.id}}" class="content__btn btn btn_red" type="button">Удалить</a>
+      {% endif %}
+      <button class="content__btn btn" data-force="0">Опубликовать</button>
+      <button class="content__btn btn" onclick="force = 1">Опубликовать сразу</button>
+    </div>
+  </form>
+</div>
+
+{% endblock %}
